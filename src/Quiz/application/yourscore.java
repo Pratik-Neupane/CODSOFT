@@ -8,22 +8,32 @@ import java.awt.event.ActionListener;
 public class yourscore extends JFrame implements ActionListener {
     int score;
     String name;
-    JButton b2,b3;
-    yourscore(int score, String name){
-        this.score=score;
-        this.name=name;
+    JButton b1, b2, b3;
+
+    yourscore(int score, String name) {
+        this.score = score;
+        this.name = name;
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/score.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(900,300, Image.SCALE_DEFAULT);
+        Image i2 = i1.getImage().getScaledInstance(900, 300, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel image = new JLabel(i3);
-        image.setBounds(0,0,900,300);
+        image.setBounds(0, 0, 900, 300);
         add(image);
 
-        JLabel l1 = new JLabel(""+name+" Your Score is "+ score);
+        JLabel l1 = new JLabel("" + name + " Your Score is " + score);
         l1.setBounds(250, 300, 800, 70);
         l1.setFont(new Font("Monospaced", Font.BOLD, 30));
         add(l1);
+
+        b1 = new JButton("Correct Answers");
+        b1.setBounds(200, 460, 250, 30);
+        b1.setFont(new Font("Monospaced", Font.ITALIC, 20));
+        b1.setForeground(Color.BLACK);
+        b1.setBackground(Color.YELLOW);
+        b1.addActionListener(this);
+        add(b1);
+
 
         b2 = new JButton("Exit");
         b2.setBounds(550, 500, 150, 30);
@@ -52,17 +62,19 @@ public class yourscore extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==b2) {
+        if (e.getSource() == b2) {
             setVisible(false);
-        }else{
+        } else if (e.getSource() == b3) {
             new Login();
             setVisible(false);
+        } else {
+            new correctAnswers();
         }
 
     }
 
     public static void main(String[] args) {
-        new yourscore(0,"");
+        new yourscore(0, "");
 
     }
 }
