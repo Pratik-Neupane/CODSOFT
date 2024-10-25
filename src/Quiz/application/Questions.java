@@ -6,28 +6,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Questions extends JFrame implements ActionListener{
+    String name;
     JButton b2,b3;
     JLabel l1,l2;
     JRadioButton r1,r2,r3,r4;
+    ButtonGroup b1;
     String questions[][]= new String[10][5];
     String correctAnswers[][]=new String[10][2];
-    public static int timer = 30;
+    String useranswer[][]= new String[10][1];
+    public static int timer = 15;
+    public static int ans_given = 0;
+    public static int count = 0;
+    public static int score = 0;
 
-        Questions() {
+        Questions(String name) {
+            this.name = name;
             ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/quiz.jpg"));
-            Image i2 = i1.getImage().getScaledInstance(400,600, Image.SCALE_DEFAULT);
+            Image i2 = i1.getImage().getScaledInstance(380,600, Image.SCALE_DEFAULT);
             ImageIcon i3 = new ImageIcon(i2);
             JLabel image = new JLabel(i3);
-            image.setBounds(0,0,400,600);
+            image.setBounds(0,0,380,600);
             add(image);
 
             l1 = new JLabel();
-            l1.setBounds(480, 100, 500, 70);
+            l1.setBounds(400, 100, 500, 70);
             l1.setFont(new Font("Monospaced", Font.BOLD, 18));
             add(l1);
 
             l2 = new JLabel();
-            l2.setBounds(480, 150, 500, 70);
+            l2.setBounds(400, 150, 500, 70);
             l2.setFont(new Font("Monospaced", Font.BOLD, 18));
             add(l2);
 
@@ -120,22 +127,22 @@ public class Questions extends JFrame implements ActionListener{
             correctAnswers[9][0] = "Sun Microsystems";
 
             r1 = new JRadioButton("");
-            r1.setBounds(500, 290, 150, 20);
+            r1.setBounds(500, 290, 300, 20);
             add(r1);
 
             r2 = new JRadioButton("");
-            r2.setBounds(500, 320, 150, 20);
+            r2.setBounds(500, 320, 300, 20);
             add(r2);
 
             r3 = new JRadioButton("");
-            r3.setBounds(500, 350, 150, 20);
+            r3.setBounds(500, 350, 300, 20);
             add(r3);
 
             r4 = new JRadioButton("");
-            r4.setBounds(500, 380, 150, 20);
+            r4.setBounds(500, 380, 300, 20);
             add(r4);
 
-            ButtonGroup b1 = new ButtonGroup();
+            b1 = new ButtonGroup();
             b1.add(r1);
             b1.add(r2);
             b1.add(r3);
@@ -146,7 +153,7 @@ public class Questions extends JFrame implements ActionListener{
             setVisible(true);
             setLocation(350, 100);
             setSize(900, 600);
-            start(0);
+            start(count);
         }
         @Override
         public void paint(Graphics g){
@@ -154,29 +161,120 @@ public class Questions extends JFrame implements ActionListener{
             String time = "Time left is "+timer+" Seconds";
             g.setColor(new Color(255, 0, 0));
             g.setFont(new Font("monospaced",Font.BOLD,15));
-            if(timer>0){
-                g.drawString(time,650,100);
-                timer--;
+            if(timer>0) {
+                g.drawString(time, 650, 100);
+            } else{
+                g.drawString("Times Up!!!",650,100);
+
+
             }
+                timer--;
+                try{
+                    Thread.sleep(1000);
+                    repaint();
+
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+                if(ans_given==1){
+                   timer=15;
+                   ans_given=0;
+                } else if (timer<0) {
+                    timer = 15;
+                    if (count == 8) {
+                        b2.setEnabled(false);
+                        b3.setEnabled(true);
+                    }
+                    if (count == 9) {
+                        if (b1.getSelection() == null) {
+                            useranswer[count][0] = "";
+                        } else {
+                            useranswer[count][0] = b1.getSelection().getActionCommand();
+                        }
+                        for (int i=0;i<useranswer.length;i++){
+                            if(useranswer[i][0].equals(correctAnswers[i][0])){
+                                score+=1;
+                            }
+                            else {
+                                score+=0;
+                            }
+                        }
+                        setVisible(false);
+                        new yourscore(score,name);
+
+                    } else {
+                        if (b1.getSelection() == null) {
+                            useranswer[count][0] = "";
+                        } else {
+                            useranswer[count][0] = b1.getSelection().getActionCommand();
+                        }
+
+                        count++;
+                        start(count);
+                    }
+                }
+
+
 
         }
         public void start(int Count){
             l1.setText("Question no "+ (Count +1)+"." );
             l2.setText(questions[Count][0]);
             r1.setText(questions[Count][1]);
+            r1.setActionCommand(questions[count][1]);
             r2.setText(questions[Count][2]);
+            r2.setActionCommand(questions[count][2]);
             r3.setText(questions[Count][3]);
+            r3.setActionCommand(questions[count][3]);
             r4.setText(questions[Count][4]);
+            r4.setActionCommand(questions[count][4]);
+            b1.clearSelection();
 
         }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+            if(e.getSource()==b2){
+                repaint();
+                ans_given = 1;
+                if(b1.getSelection()==null){
+                    useranswer[count][0]="";
+                }else{
+                    useranswer[count][0]=b1.getSelection().getActionCommand();
+                }
+                if(count==8){
+                    b2.setEnabled(false);
+                    b3.setEnabled(true);
+                }
+
+                count++;
+                start(count);
+            }
+            else{
+                ans_given=1;
+                if (b1.getSelection() == null) {
+                    useranswer[count][0] = "";
+                } else {
+                    useranswer[count][0] = b1.getSelection().getActionCommand();
+                }
+                for (int i=0;i<useranswer.length;i++){
+                    if(useranswer[i][0].equals(correctAnswers[i][0])){
+                        score+=1;
+                    }
+                    else {
+                        score+=0;
+                    }
+                }
+                setVisible(false);
+                new yourscore(score,name);
+
+
+            }
 
     }
 
     public static void main(String[] args) {
-        new Questions();
+        new Questions("");
     }
 
 }

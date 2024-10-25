@@ -42,7 +42,7 @@ public class Rules extends JFrame implements ActionListener {
         rule4.setFont(new Font("Monospaced", Font.PLAIN, 18));
         add(rule4);
 
-        JLabel rule5 = new JLabel("5. Timer Rule: Answer in 30 seconds or face the elevator music!");
+        JLabel rule5 = new JLabel("5. Timer Rule: Answer in 15 seconds or face the elevator music!");
         rule5.setBounds(10, 310, 800, 30);
         rule5.setFont(new Font("Monospaced", Font.PLAIN, 18));
         add(rule5);
@@ -67,7 +67,8 @@ public class Rules extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try{
-            new Questions();
+            new Questions(name);
+            setVisible(false);
 
         }
         catch (Exception E){

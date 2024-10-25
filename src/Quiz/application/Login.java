@@ -10,10 +10,10 @@ public class Login extends JFrame implements ActionListener {
     JButton b1,b2;
     Login(){
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/quiz.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(400,600, Image.SCALE_DEFAULT);
+        Image i2 = i1.getImage().getScaledInstance(380,600, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel image = new JLabel(i3);
-        image.setBounds(0,0,400,600);
+        image.setBounds(0,0,380,600);
         add(image);
 
         JLabel l1 = new JLabel("Enter Your Name");
