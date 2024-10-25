@@ -57,10 +57,11 @@ public class Login extends JFrame implements ActionListener {
         try{
             String name = t1.getText();
             if(e.getSource()==b1){
-                if(t1.getText().equals("")){
+                if(name.equals("")){
                     JOptionPane.showMessageDialog(null,"Please Enter Your Name","Name Not Entered",JOptionPane.ERROR_MESSAGE);
                 } else{
-
+                    new Rules(name);
+                    setVisible(false);
                 }
 
             }
